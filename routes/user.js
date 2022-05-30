@@ -3,11 +3,13 @@ const router = express.Router();
 const bcrypt = require("bcrypt");
 const { User, validateUser } = require("../models/user");
 const auth = require("../middleware/auth");
+const _ = require("lodash");
 
 router.get("/:id", async (req, res) => {
   try {
     const result = await User.findById(req.params.id);
-    res.send(result);
+    const user = _.pick(result, "username", "avatarUrl");
+    res.send(user);
   } catch (e) {
     res.status(400).send("Bad Request");
   }
