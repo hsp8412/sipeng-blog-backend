@@ -23,7 +23,7 @@ router.post("/", auth, async (req, res) => {
 
   const { title, preview, content, userId, coverImg, tags } = req.body;
 
-  const post = {
+  const post = new Post({
     title,
     preview,
     content,
@@ -32,10 +32,12 @@ router.post("/", auth, async (req, res) => {
     tags,
     createDate: Date.now(),
     updateDate: Date.now(),
-  };
+  });
+
   try {
     await post.save();
   } catch (e) {
+    console.log(e);
     return res.status(500).send("Internal error");
   }
   res.send(post);
