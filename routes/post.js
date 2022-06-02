@@ -54,6 +54,7 @@ router.delete("/:id", auth, async (req, res) => {
 
 router.put("/:id", auth, async (req, res) => {
   const { error } = validatePost(req.body);
+
   if (error) {
     console.log(error.details[0].message);
     return res.status(400).send(error.details[0].message);
@@ -61,6 +62,8 @@ router.put("/:id", auth, async (req, res) => {
 
   const postInDb = await Post.findById(req.params.id);
   if (!postInDb) return res.status(400).send("Post not found.");
+
+  console.log(postInDb);
 
   const { title, preview, content, userId, coverImg, tags } = req.body;
   const updatedPost = {
