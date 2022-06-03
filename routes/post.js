@@ -2,6 +2,7 @@ const express = require("express");
 const { Post, validatePost } = require("../models/post");
 const auth = require("../middleware/auth");
 const router = express.Router();
+const validateObjectId = require("../middleware/validateObjectId");
 
 //get all posts
 router.get("/", async (req, res) => {
@@ -10,7 +11,7 @@ router.get("/", async (req, res) => {
 });
 
 //get post by id
-router.get("/:id", async (req, res) => {
+router.get("/:id", validateObjectId, async (req, res) => {
   const post = await Post.findById(req.params.id);
   if (!post) return res.status(404).send("The post does not exist.");
   res.send(post);
@@ -43,7 +44,7 @@ router.post("/", auth, async (req, res) => {
   res.send(post);
 });
 
-router.delete("/:id", auth, async (req, res) => {
+router.delete("/:id", [auth, validateObjectId], async (req, res) => {
   try {
     const post = await Post.findByIdAndDelete(req.params.id);
     return res.send(post);
@@ -52,7 +53,7 @@ router.delete("/:id", auth, async (req, res) => {
   }
 });
 
-router.put("/:id", auth, async (req, res) => {
+router.put("/:id", [auth, validateObjectId], async (req, res) => {
   const { error } = validatePost(req.body);
 
   if (error) {

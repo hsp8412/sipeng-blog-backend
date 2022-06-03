@@ -4,8 +4,9 @@ const bcrypt = require("bcrypt");
 const { User, validateUser } = require("../models/user");
 const auth = require("../middleware/auth");
 const _ = require("lodash");
+const validateObjectId = require("../middleware/validateObjectId");
 
-router.get("/:id", async (req, res) => {
+router.get("/:id", validateObjectId, async (req, res) => {
   try {
     const result = await User.findById(req.params.id);
     const user = _.pick(result, "username", "avatarUrl");
