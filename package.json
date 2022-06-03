@@ -4,6 +4,7 @@
   "description": "Backend for my blog application.",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "test": "nodemon index.js"
   },
   "author": "Sipeng He",
