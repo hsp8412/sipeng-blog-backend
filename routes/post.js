@@ -35,22 +35,14 @@ router.post("/", auth, async (req, res) => {
     updateDate: Date.now(),
   });
 
-  try {
-    await post.save();
-  } catch (e) {
-    console.log(e);
-    return res.status(500).send("Internal error");
-  }
+  await post.save();
+
   res.send(post);
 });
 
 router.delete("/:id", [auth, validateObjectId], async (req, res) => {
-  try {
-    const post = await Post.findByIdAndDelete(req.params.id);
-    return res.send(post);
-  } catch (e) {
-    return res.status(400).send("Bad request");
-  }
+  const post = await Post.findByIdAndDelete(req.params.id);
+  return res.send(post);
 });
 
 router.put("/:id", [auth, validateObjectId], async (req, res) => {
@@ -78,14 +70,10 @@ router.put("/:id", [auth, validateObjectId], async (req, res) => {
     updateDate: Date.now(),
   };
 
-  try {
-    const result = await Post.findByIdAndUpdate(req.params.id, updatedPost, {
-      new: true,
-    });
-    res.send(result);
-  } catch (e) {
-    res.status(500).send("Internal error");
-  }
+  const result = await Post.findByIdAndUpdate(req.params.id, updatedPost, {
+    new: true,
+  });
+  res.send(result);
 });
 
 module.exports = router;

@@ -4,6 +4,7 @@ const user = require("../routes/user");
 const post = require("../routes/post");
 const auth = require("../routes/auth");
 const image = require("../routes/image");
+const error = require("../middleware/error");
 
 module.exports = function (app) {
   app.get("/", function (req, res, next) {
@@ -16,4 +17,5 @@ module.exports = function (app) {
   app.use("/api/post", post);
   app.use("/api/auth", auth);
   app.use("/api/image", image);
+  app.use(error);
 };

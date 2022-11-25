@@ -7,13 +7,9 @@ const _ = require("lodash");
 const validateObjectId = require("../middleware/validateObjectId");
 
 router.get("/:id", validateObjectId, async (req, res) => {
-  try {
-    const result = await User.findById(req.params.id);
-    const user = _.pick(result, "username", "avatarUrl");
-    res.send(user);
-  } catch (e) {
-    res.status(400).send("Bad Request");
-  }
+  const result = await User.findById(req.params.id);
+  const user = _.pick(result, "username", "avatarUrl");
+  res.send(user);
 });
 
 router.post("/", async (req, res) => {
@@ -37,14 +33,9 @@ router.post("/", async (req, res) => {
     avatarUrl,
   });
 
-  try {
-    const result = await user.save();
-    const { _id } = result;
-    res.send({ _id, email, username });
-  } catch (e) {
-    console.log(e);
-    res.status(500).send("Internal Error");
-  }
+  const result = await user.save();
+  const { _id } = result;
+  res.send({ _id, email, username });
 });
 
 router.put("/:id", auth, async (req, res) => {
@@ -62,23 +53,15 @@ router.put("/:id", auth, async (req, res) => {
     avatarUrl,
   };
 
-  try {
-    const result = await User.findByIdAndUpdate(req.params.id, user, {
-      new: true,
-    });
-    res.send(result);
-  } catch (e) {
-    res.status(400).send("Bad Request");
-  }
+  const result = await User.findByIdAndUpdate(req.params.id, user, {
+    new: true,
+  });
+  res.send(result);
 });
 
 router.delete("/:id", auth, async (req, res) => {
-  try {
-    const result = await User.findByIdAndDelete(req.params.id);
-    res.send(result);
-  } catch (e) {
-    res.status(400).send("Bad Request");
-  }
+  const result = await User.findByIdAndDelete(req.params.id);
+  res.send(result);
 });
 
 module.exports = router;

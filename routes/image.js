@@ -21,12 +21,8 @@ router.post("/", async (req, res) => {
     description,
   });
 
-  try {
-    await image.save();
-  } catch (e) {
-    console.log(e);
-    return res.status(500).send("Internal error");
-  }
+  await image.save();
+
   res.send(image);
 });
 
